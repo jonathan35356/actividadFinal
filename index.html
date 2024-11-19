@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Actividades Extracurriculares</title>
+  <link rel="stylesheet" href="styles.css" />
+  <!-- Agregar React y ReactDOM desde un CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+  <!-- Agregar Babel para procesar JSX -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.20.0/babel.min.js"></script>
+</head>
+
+<body>
+  <div id="app"></div>
+  <script type="text/babel">
+    const { useState } = React;
+
+    const Activity = ({ activity, isSelected, onSelect }) => {
+      return (
+        <div
+          className={`activity ${isSelected ? 'selected' : ''}`}
+          onClick={onSelect}
+        >
+          <img src={activity.image} alt={activity.title} className="activity-image" />
+          <h2 className="activity-title">{activity.title}</h2>
+          <div className="activity-info">
+            <div className="activity-time">{activity.time}</div>
+            <div className="activity-location">{activity.location}</div>
+          </div>
+          <h3 className="activity-requirements-title">Requisitos:</h3>
+          <ul className="activity-requirements">
+            {activity.requirements.map((requirement, index) => (
+              <li key={index}>{requirement}</li>
+            ))}
+          </ul>
+        </div>
+      );
+    };
+
+    const ExtracurricularActivitiesApp = () => {
+      const [selectedActivity, setSelectedActivity] = useState(null);
+      const [searchTerm, setSearchTerm] = useState('');
+
+      const activities = [
+        {
+          id: 1,
+          title: 'Club de lectura',
+          time: '16:00 - 18:00',
+          location: 'Biblioteca el centenario',
+          requirements: ['Foto copia de Targeta ID o Cedula', 'Cuaderno', 'Lápiz'],
+          image: 'biblioteca.jpeg',
+        },
+        {
+          id: 2,
+          title: 'Aero Rumba',
+          time: '10:00 - 12:00',
+          location: 'Parque principal',
+          requirements: ['Ropa comoda', 'Tarro de agua'],
+          image: 'aerorumba.jpg',
+        },
+        {
+          id: 3,
+          title: 'actividades varias',
+          time: '14:00 - 16:00',
+          location: 'Parque principal',
+          requirements: ['Ropa comoda', 'Tarro de agua'],
+          image: 'bingo.jpg',
+        },
+
+
+      ];
+
+      const filteredActivities = activities.filter((activity) =>
+        activity.title.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+
+      return (
+        <div>
+          <header className="app-header">
+            <div className="header-content">
+              <div className="header-logo">
+                <img src="logo.png" alt="Logo" />
+                <h1 className="header-title">Actividades Extracurriculares</h1>
+              </div>
+              <div className="header-search">
+                <input
+                  type="text"
+                  placeholder="Buscar actividad..."
+                  className="search-input"
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                />
+                <div className="search-icon">
+                  <svg className="h-5 w-5 text-gray-400" viewBox="0 0 20 20" fill="currentColor">
+                    <path
+                      fillRule="evenodd"
+                      d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
+                      clipRule="evenodd"
+                    />
+                  </svg>
+                </div>
+              </div>
+            </div>
+          </header>
+
+          <div className="app-content">
+            <div className="activities-grid">
+              {filteredActivities.map((activity) => (
+                <Activity
+                  key={activity.id}
+                  activity={activity}
+                  isSelected={selectedActivity?.id === activity.id}
+                  onSelect={() => setSelectedActivity(activity)}
+                />
+              ))}
+            </div>
+          </div>
+          <div className="app-description">
+            <p>
+              Bienvenido a nuestra plataforma de Actividades Extracurriculares. Aquí encontrarás una variedad
+              de actividades diseñadas para fomentar el aprendizaje, la diversión y la interacción social.
+              ¡Descubre la que más te interese y participa con entusiasmo!
+            </p>
+          </div>
+
+          <footer className="app-footer">
+            <div className="footer-content">
+              <p>&copy; 2024 Actividades Extracurriculares. Todos los derechos reservados.</p>
+              <ul className="footer-links">
+                <li><a href="#about">Sobre nosotros</a></li>
+                <li><a href="#contact">Contacto</a></li>
+                <li><a href="#terms">Términos y condiciones</a></li>
+              </ul>
+            </div>
+          </footer>
+
+        </div>
+      );
+    };
+
+
+    ReactDOM.render(<ExtracurricularActivitiesApp />, document.getElementById('app'));
+  </script>
+
+</body>
+
+</html>
